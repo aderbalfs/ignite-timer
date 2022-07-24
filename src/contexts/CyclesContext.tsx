@@ -11,7 +11,7 @@ import {
 } from "../reducers/cycles/actions";
 import { Cycle, cyclesReducers } from "../reducers/cycles/reducers";
 import { interruptCurrentCycleAction } from "./../reducers/cycles/actions";
-import { differenceInSeconds } from 'date-fns';
+import { differenceInSeconds } from "date-fns";
 
 interface CreateCycleData {
   task: string;
@@ -38,10 +38,12 @@ interface CyclesContextProviderProps {
 export function CyclesContextProvider({
   children,
 }: CyclesContextProviderProps) {
-  const [cyclesState, dispatch] = useReducer(cyclesReducers, {
+  const [cyclesState, dispatch] = useReducer(
+    cyclesReducers, 
+    {
     cycles: [],
     activeCycleId: null,
-  });
+    },
   () => {
     const storedStateAsJSON = localStorage.getItem(
       "@ignite-timer:cycles-state-1.0.0"
@@ -50,17 +52,19 @@ export function CyclesContextProvider({
     if (storedStateAsJSON) {
       return JSON.parse(storedStateAsJSON);
     }
-  };
+  }
+)
+
 
   const { cycles, activeCycleId } = cyclesState;
   const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId);
 
   const [amountSecondsPassed, setAmountSecondsPassed] = useState(() => {
-    if(activeCycle) {
-      return differenceInSeconds(new Date(), new Date(activeCycle.startDate))
+    if (activeCycle) {
+      return differenceInSeconds(new Date(), new Date(activeCycle.startDate));
     }
 
-    return 0
+    return 0;
   });
 
   useEffect(() => {
